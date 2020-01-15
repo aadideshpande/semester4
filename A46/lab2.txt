@@ -1,0 +1,89 @@
+create table employee(
+empno numeric(5) primary key,
+empname varchar(25) not null,
+gender char(1) not null,
+salary numeric(5) not null,
+address varchar(50) not null,
+dno numeric(2),
+constraint gender_ck check(gender in('M','F')));
+
+create table department(
+deptno numeric(2) primary key,
+deptname varchar(20) not null unique,
+location varchar(30));
+
+alter table employee modify foreign key(dno) references department(deptno);
+
+insert into department values(11, 'cse', 'manipal main');
+insert into department values(12, 'eee', 'manipal south');
+insert into department values(13, 'ece', 'manipal north');
+insert into department values(14, 'mech', 'manipal old');
+insert into department values(15, 'hum', 'manipal block 1');
+
+
+insert into employee values(10000, 'ABC', 'M', 30000, '123 street', 13);
+insert into employee values(10001, 'XYZ', 'M', 40000, 'nyc', 11);
+insert into employee values(10002, 'pqr', 'F', 35000, 'mit', 12);
+insert into employee values(10003, 'qwerty', 'F', 50000, 'palo alto', 14);
+insert into employee values(10004, 'zxcvb', 'M', 10000, 'seattle', 14);
+insert into employee values(10005, 'mnb', 'F', 36000, 'atlantis', 11);
+
+insert into employee values(10007, 'asd', 'M', 36000, 'atlantis', 14)
+unique constraint (A46.SYS_C00137047) violated
+
+ delete from department where deptno=11;
+ integrity constraint (A46.SYS_C00137052) violated - child record
+found
+
+---------------------------------------------------------------------------------------------------------
+select name,dept_name from student;
+select * from instructor;
+select title from course where dept_name='Comp. Sci.' and credits=3 ;
+select course_id, title from takes natural join course where id=12345;
+
+select name from instructor where salary between 40000 and 90000;
+
+select id from instructor minus select id from teaches;
+
+select name, title, year from takes natural join section join student using(id) join course using(course_id) where room_number='101'; 
+
+ select name, course_id, title as c_name from student natural join takes natural join course where year=2009;
+
+select distinct T.name, T.salary as inst_salary from instructor T, instructor S where S.dept_name='Comp. Sci.' and T.salary > S.salary;
+
+select name from instructor where dept_name like '%ch%';
+
+select name, length(name) from student;
+
+select dept_name,substr(dept_name,3,3) from department; 
+
+ select UPPER(name) from instructor;
+
+select name, nvl(salary, 10000) from instructor;
+
+select salary, round(salary/3, -2) from instructor;
+
+create table employee(
+empno numeric(5) primary key,
+empname varchar(25) not null,
+gender char(1) not null,
+salary numeric(5) not null,
+address varchar(50) not null,
+dno numeric(2),
+dob date,
+constraint gender_ck check(gender in('M','F')));
+
+insert into employee values(10000, 'ABC', 'M', 30000, '123 street', 13,'10-feb-2000');
+insert into employee values(10001, 'XYZ', 'M', 40000, 'nyc', 11,'12-jan-2001');
+insert into employee values(10002, 'pqr', 'F', 35000, 'mit', 12,'10-feb-2003');
+insert into employee values(10003, 'qwerty', 'F', 50000, 'palo alto', 14,'10-dec-2002');
+insert into employee values(10004, 'zxcvb', 'M', 10000, 'seattle', 14,'10-sep-2000');
+insert into employee values(10005, 'mnb', 'F', 36000, 'atlantis', 11,'10-feb-2000');
+
+select dob from employee;
+select empname, to_char(dob, 'DD-MON-YYYY') from employee;
+
+
+
+
+#constraint deptno foreign key(deptno) references department)

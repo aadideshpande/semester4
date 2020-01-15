@@ -1,0 +1,59 @@
+create table STUDENT(
+reg_no number(20),
+stu_name varchar(20),
+stu_age number(5),
+stu_dob date,
+subject1_marks number(4,2),
+subject2_marks number(4,2),
+subject3_marks number(4,1));
+
+insert into STUDENT values(101, 'AAA', 16, '03-jul-88', 80, 90, 98);
+
+alter table student add(Gender char(5));
+
+alter table STUDENT drop column Gender
+
+alter table STUDENT modify(stu_age number(3));
+
+rename STUDENT to STUDENTS
+
+trunc table STUDENTS;
+
+drop table STUDENT;
+
+select subject1_marks + subject2_marks + subject3_marks tot_marks from STUDENT
+
+insert into STUDENTS(reg_no, stu_name) values (102, 'KRISH');
+
+delete from STUDENTS where reg_no = 102;
+
+update STUDENT set stu_name = 'MANAV';
+----------------------------------------------------------
+
+CREATE TABLE employee(
+emp_no NUMBER(5) NOT NULL,
+emp_name VARCHAR(20) NOT NULL,
+emp_address VARCHAR(50),
+PRIMARY KEY(emp_no));
+
+INSERT INTO employee VALUES(10000, 'Jim', 'Scranton Road');
+INSERT INTO employee VALUES(10001, 'Axe', 'Long Island');
+INSERT INTO employee VALUES(10002, 'Frank', 'The Oval,Washington DC');
+INSERT INTO employee VALUES(10003, 'XYZ', '123, Oxford Street,London');
+INSERT INTO employee VALUES(10004, 'QWERTY', 'Area 51');
+INSERT INTO employee VALUES(10005, 'cxz', 'MANIPAL');
+
+SELECT emp_name FROM employee;
+
+ALTER TABLE employee ADD(salary number(5,2));
+
+UPDATE employee SET salary = 50000;
+
+DELETE FROM employee WHERE emp_address = 'MANGALORE';
+
+RENAME employee to employee1;
+
+
+
+
+
