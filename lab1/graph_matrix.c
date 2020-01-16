@@ -16,7 +16,7 @@ int main()
 	int option = 0;
 	while(option != -1)
 	{
-		printf("enter the two vertice numbers that have a link \n");
+		printf("enter the two vertices that have a link \n");
 		int x, y;
 		scanf(" %d %d", &x, &y );
 		table[x][y] = 1;
