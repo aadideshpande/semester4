@@ -1,0 +1,150 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ;multiplication of two numbers using repeated addition
+    2 00000000                 area             reset, data, readonly
+    3 00000000                 export           __Vectors
+    4 00000000         __Vectors
+    5 00000000 10001000        dcd              0x10001000
+    6 00000004 00000000        dcd              Reset_Handler
+    7 00000008         
+    8 00000008                 area             mydata, data,readwrite
+    9 00000000 00000000 
+                       dst     dcd              0
+   10 00000004                 area             mycode, code,readonly
+   11 00000000                 export           Reset_Handler
+   12 00000000 00000016 
+                       n1      dcd              22
+   13 00000004 00000004 
+                       n2      dcd              04
+   14 00000008                 ENTRY
+   15 00000008         Reset_Handler
+   16 00000008 4805            ldr              r0,=n1
+   17 0000000A 4906            ldr              r1,=n2
+   18 0000000C 6802            ldr              r2, [r0]
+   19 0000000E 680B            ldr              r3, [r1]
+   20 00000010 F04F 0500       mov              r5, #0      ;r5 acts as the the
+                                                             register to store 
+                                                            the carry
+   21 00000014         
+   22 00000014         loop
+   23 00000014 18D2            adds             r2,r3
+   24 00000016 D2FF            bcs              goto
+   25 00000018         goto
+   26 00000018 F145 0500       adc              r5, #0
+   27 0000001C         
+   28 0000001C 3B01            subs             r3, #1
+   29 0000001E D1F9            bne              loop
+   30 00000020                 end
+              00000000 
+              00000000 
+Command Line: --debug --xref --cpu=Cortex-M3 --apcs=interwork --depend=.\mul_2_
+nos.d -o.\mul_2_nos.o -IC:\Keil\ARM\RV31\INC -IC:\Keil\ARM\CMSIS\Include -IC:\K
+eil\ARM\Inc\NXP\LPC17xx --predefine="__EVAL SETA 1" --list=.\mul_2_nos.lst mul_
+2_nos.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+__Vectors 00000000
+
+Symbol: __Vectors
+   Definitions
+      At line 4 in file mul_2_nos.s
+   Uses
+      At line 3 in file mul_2_nos.s
+Comment: __Vectors used once
+reset 00000000
+
+Symbol: reset
+   Definitions
+      At line 2 in file mul_2_nos.s
+   Uses
+      None
+Comment: reset unused
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+dst 00000000
+
+Symbol: dst
+   Definitions
+      At line 9 in file mul_2_nos.s
+   Uses
+      None
+Comment: dst unused
+mydata 00000000
+
+Symbol: mydata
+   Definitions
+      At line 8 in file mul_2_nos.s
+   Uses
+      None
+Comment: mydata unused
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Reset_Handler 00000008
+
+Symbol: Reset_Handler
+   Definitions
+      At line 15 in file mul_2_nos.s
+   Uses
+      At line 6 in file mul_2_nos.s
+      At line 11 in file mul_2_nos.s
+
+goto 00000018
+
+Symbol: goto
+   Definitions
+      At line 25 in file mul_2_nos.s
+   Uses
+      At line 24 in file mul_2_nos.s
+Comment: goto used once
+loop 00000014
+
+Symbol: loop
+   Definitions
+      At line 22 in file mul_2_nos.s
+   Uses
+      At line 29 in file mul_2_nos.s
+Comment: loop used once
+mycode 00000000
+
+Symbol: mycode
+   Definitions
+      At line 10 in file mul_2_nos.s
+   Uses
+      None
+Comment: mycode unused
+n1 00000000
+
+Symbol: n1
+   Definitions
+      At line 12 in file mul_2_nos.s
+   Uses
+      At line 16 in file mul_2_nos.s
+Comment: n1 used once
+n2 00000004
+
+Symbol: n2
+   Definitions
+      At line 13 in file mul_2_nos.s
+   Uses
+      At line 17 in file mul_2_nos.s
+Comment: n2 used once
+6 symbols
+343 symbols in table

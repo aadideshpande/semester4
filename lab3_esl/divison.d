@@ -1,0 +1,1 @@
+.\divison.o: divison.s
