@@ -149,3 +149,20 @@ select dept_name, avg_salary
 from (select dept_name, avg(salary)
          as avg_salary from instructor group by dept_name)
 where avg_salary > 42000;
+
+18)
+create view all_courses as
+select title, building, room_number
+from course, section
+where dept_name='Physics' and semester='Fall' and year=2009;
+
+19)
+SQL> select * from all_courses;
+
+20)
+create view department_total_salary as
+select dept_name, sum(salary) as s 
+from instructor
+group by dept_name;
+
+select * from department_total_salary;

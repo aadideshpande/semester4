@@ -1,0 +1,150 @@
+1)
+select course_id, count(id) as num_students
+from takes
+group by course_id;
+
+--attributes without aggregate function should be present in group by column
+-- in above case --> course_id
+
+-----------------------------------------------------------------------------------
+2)
+
+select dept_name, count(id) 
+from student
+group by dept_name
+having (count(id)) > 2;
+
+with st_dept (d_n, ns)
+as 
+(select dept_name, count(id) from student
+group by dept_name),
+select dept_avg(value) as (select avg(ns) from st_dept);
+
+select  d_n from st_dept, dept_avg
+where ns > value;
+-----------------------------------------------------------------------------------
+3)
+select dept_name, count(course_id)
+from course
+group by dept_name;
+----------------------------------------------------------------------------------
+4)
+select dept_name, avg(salary)
+from instructor natural join department
+group by dept_name
+having avg(salary) > 42000;
+
+select dept_name, avg(salary)
+from instructor 
+group by dept_name
+having avg(salary)> 42000;
+----------------------------------------------------------------------------------
+5) 
+select sec_id ,count(id)
+from takes
+where year=2009 and semester='Spring'
+group by sec_id;
+
+----------------------------------------------------------------------------------
+6)
+
+select course_id, prereq_id
+from prereq
+order by course_id;
+
+----------------------------------------------------------------------------------
+7)
+select * 
+from instructor
+order by salary desc;
+-----------------------------------------------------------------------------------
+8)
+select max(tot_sal)
+from
+(select dept_name, sum(salary) as tot_sal
+from instructor
+group by dept_name);
+------------------------------------------------------------------------------------
+9)
+select dept_name,avg_sal
+from
+(select dept_name, avg(salary) as avg_sal
+from instructor
+group by dept_name)
+where
+avg_sal > 42000;
+------------------------------------------------------------------------------------
+10) DO AGAIN
+select max(total)
+from
+(select sec_id,count(id) as total
+from takes
+where year=2010 and semester='Spring'
+group by sec_id);
+------------------------------------------------------------------------------------
+
+11)
+
+select distinct t2.id, i.name from takes t1
+join
+teaches t2 using (course_id, sec_id, semester, year) 
+join
+student s on 
+(t1.id = s.id)
+join instructor i on 
+(i.id = t2.id) where s.dept_name ='Comp. Sci.'; 
+
+12)
+select dept_name, avg(salary), no_inst
+from
+
+
+----------------------------------------------------------------------------------------
+13)
+select total_salary
+from
+(select max(tot_sal)
+from
+(select dept_name, sum(salary) as tot_sal
+from instructor
+group by dept_name);
+
+14)
+with dept_total 
+(dept_name, total_sal) as
+(select dept_name,sum(salary)
+from instructor 
+group by dept_name),
+avg_tot(value) as (select avg(total_sal) from 
+dept_total),
+(select dept_name, total_sal from 
+dept_total, avg_tot where 
+total_sal > value); 
+
+15)
+with enrollment(sec_id, total) as
+(select sec_id,count(id) 
+from takes where semester='Fall' and year=2009 group by sec_id),
+max_en(value) as (select max(total) from enrollment),
+(select sec_id, total from enrollment, max_en where
+total >= value);
+
+with dept_credit(dept_name, t_credit)
+as
+(select dept_name, sum(credit) from student 
+group by dept_name),
+fin_credit(value)
+as
+(select sum(credit) from student 
+where dept_name='Finance' ),
+select dept_name, t_credit 
+from dept_credit, fin_credit
+where
+t_credit > value;
+
+----------------------------------------------
+PRACTICE
+with temp_table(avg_val) as
+(select avg(salary) from instructor),
+select id, name,salary from instructor 
+where salary > temp_table.avg_val;
