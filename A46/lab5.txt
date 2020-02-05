@@ -1,0 +1,149 @@
+17)
+savepoint s02;
+delete from instructor where dept_name='Finance';
+rollback;      
+
+----------------------------------------------------------------------------
+18)
+
+savepoint s03;
+delete from course where dept_name='Comp. Sci.';
+select * from course;
+rollback;
+-----------------------------------------------------------------------------
+19)
+
+insert into department values('IT', 'Taylor', 99000);
+update student set dept_name='IT' where dept_name='Comp. Sci.';
+select * from student;
+rollback;
+----------------------------------------------------------------------------
+20)
+savepoint s05;
+update instructor set salary=salary*1.05 where salary < 100000;
+update instructor set salary=salary*1.03 where salary > 100000;
+
+update instructor set salary=case
+when salary > 100000 then salary*1.05
+else salary*1.03 
+end;
+
+rollback;
+--------------------------------------------------------------------------------
+22)
+
+savepoint s11
+delete
+from instructor 
+where salary <  (select avg(salary) as avg from instructor);
+rollback;
+
+--------------------------------------------------------------------------------
+
+21)
+
+savepoint s12
+insert into student select id,name, dept_name, 0 from instructor
+where id <>76543;
+-------------------------------------------------------------------------------
+1)
+select Bdate, Address
+from employee
+where Fname='John' and Minit='B' and Lname='Smith';
+
+select Fname, Address 
+from employee,department1
+where dno=dnumber and dname='Research';  
+-----------------------------------------------------------
+2) 
+select pnumber, dnum,lname,address,bdate
+from employee, project, department1
+where  dnum=dnumber and mgr_ssn=ssn and plocation='Stafford';
+---------------------------------------------------------------------
+3) 
+select distinct salary
+from employee;
+-------------------------------------------------
+4)
+
+select e.fname, e.lname, s.fname, s.lname
+from employee e, employee s
+where e.super_ssn = s.ssn;
+----------------------------------------------------------------------------------
+5)
+select pno
+from works_on, employee 
+where essn=ssn and lname='Smith'
+union
+select pnumber
+from project, department1, employee
+where dnum=dnumber and mgr_ssn=ssn and lname='Smith';
+-----------------------------------------------------------------------------------
+6)
+
+select * from employee
+where address like '%TX%';
+
+7
+
+select ssn, salary*1.1
+from employee, works_on, project
+where ssn=essn and pno=pnumber and pname='ProductX';
+--------------------------------------------------------------------------------
+8)
+
+select ssn from employee
+where dno = 5 and salary between 30000 and 50000;
+
+9)
+
+select dno,lname,pno
+from employee, works_on 
+where ssn=essn order by dno, lname,fname;
+
+
+10)
+
+select fname
+from employee  
+where super_ssn is null;
+
+11)
+select fname,dependent_name
+from employee,dependent
+where essn=ssn and fname=dependent_name and 
+employee.sex = dependent.sex;
+
+select fname
+from employee
+where ssn not in
+(select essn from dependent); 
+
+
+12)
+
+select essn 
+from works_on 
+where pno in (1,2,3);
+
+13)
+
+select distinct fname from employee,department1,dependent
+where mgr_ssn=ssn and ssn in 
+(select essn from department);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
