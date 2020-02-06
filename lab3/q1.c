@@ -11,7 +11,7 @@ int main()
 
 	for(int i = 0; i < n ; i++)
 	{
-		arr[i] = rand() % 1000;	
+		arr[i] = rand(100000) % 1000;	
 	}
 
 	for(int i = 0; i < n-1; i++)
