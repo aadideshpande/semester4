@@ -1,0 +1,246 @@
+;Linear Search
+	area reset, data,readonly
+	export __Vectors
+__Vectors
+	dcd 0x10001000
+	dcd Reset_Handler
+	
+	area mydata, data, readwrite
+check dcd 0
+pos dcd 0
+	
+	area mycode, code, readonly
+arr dcd 0xF, 0xD, 0xB, 0x9, 0x7, 0x5
+ele dcd 0xB
+
+	export Reset_Handler
+	entry
+Reset_Handler
+	ldr r0, =arr
+	ldr r1, [r0]		;first element of array
+	ldr r2, =ele	
+	ldr r3, [r2]	; r3 --> element to be found
+	ldr r4, =pos	; store position of the array(as an address)
+	mov r5, #0		 
+	mov r6, #5		; counter
+	
+loop 
+	cmp r1, r3
+	beq found
+	add r0, #4
+	ldr r1, [r0]
+	subs r6, #1
+	bne loop
+
+found 
+	mov r5, r6	; r6 contains the position of the array
+	str r0, [r4]; store the address of element found in r4
+stop
+	b stop
+	end
+	----------------------------------------------------
+; factorial of a number
+	area reset, data,readonly
+	export __Vectors
+__Vectors
+	dcd 0x10001000
+	dcd Reset_Handler
+	
+	area mydata, data, readwrite
+result dcd 0
+	
+	area mycode, code, readonly
+input dcd 4
+
+	export Reset_Handler
+	entry
+Reset_Handler
+	ldr r0, =input
+	ldr r1, =result
+	ldr r2, [r0]	;r2 contains the number
+	
+	bl fact			; go to subroutine 
+	str r2, [r1]	; store the output, after recursion 
+	
+	
+fact
+	push {r3, lr}
+addr
+	mov r3, r2
+	cmp r2, #0 	; stack contents when r2 = 0: top--> 1 ,addr mul(),2 ,addr mul(), 3, addr mul(), 4, addr mul(), r3, addr str()  
+	bne down
+	mov r2, #1
+	b down1
+	
+down
+	sub r2, #1
+	bl fact			;recursion
+	mul r2, r3		; multiply
+	;
+down1
+	pop {r3, lr}
+	bx lr
+stop
+	b stop
+	end
+---------------------------------------------------------------
+; selection sort without stack
+	area reset, data,readonly
+	export __Vectors
+__Vectors
+	dcd 0x10001000
+	dcd Reset_Handler
+	
+	area mydata, data, readwrite
+dst dcd 10,35,5,25,15
+	
+	area mycode, code, readonly
+
+	export Reset_Handler
+	entry
+Reset_Handler
+	ldr r0, =dst
+	mov r9, #0
+l2
+	mov r1, r0		; r1 as i
+	mov r3, r0
+	add r3, #4		; j = i + 1
+	add r10, r9, #1	; counter for i
+l1
+	ldr r4, [r3]	; r[4] = a[j]
+	ldr r7, [r1]	; r[7] = a[i]	
+	cmp r4, r7		; if r4 > r7, do not update min position
+	bcs up
+	mov r1, r3
+
+up
+	add r3, #4	; increment j
+	add r10, #1
+	cmp r10, #5	; till i reaches limit
+	beq goto		; for the inner loop
+	bne l1
+goto
+	ldr r2, [r0]	; r2 is the first element of the outer loop
+	ldr r6, [r1]	; r6 is MINIMUM element at end of one iteration of j
+	str r2, [r1]	; SWAP
+	str r6, [r0]	; SWAP
+	add r0, #4		; increment ptr for array
+	add r9, #1		; i = i + 1
+	cmp r9, #4		; i < n - 1
+	bne l2		; for outer loop
+	
+	end
+	
+	
+	----------------------------------------------
+
+; selection sort using empty ascending stack
+	area reset, data,readonly
+	export __Vectors
+__Vectors
+	dcd 0x10001000
+	dcd Reset_Handler
+	
+	area mydata, data, readwrite
+	
+	area mycode, code, readonly
+
+	export Reset_Handler
+	entry
+Reset_Handler
+	
+	mov r0, #10
+	mov r1, #5
+	mov r2, #35
+	mov r3, #25
+	mov r4, #15
+	stmea r13!, {r0-r4}
+	mov r0, r13		
+l2
+	mov r1, r0		; r1 as i
+	mov r3, r0
+	sub r3, #4		; j = i + 1
+	add r11, r10, #1	; counter for i
+l1
+	ldmea r3, {r4}	; r[4] = a[j]
+	ldmea r1, {r7}	; r[7] = a[i]	
+	cmp r4, r7		; if r4 > r7, do not update max position
+	bcc up
+	mov r1, r3
+
+up
+	sub r3, #4	; decrement j
+	add r11, #1
+	cmp r11, #5	; till i reaches limit
+	beq goto		; for the inner loop
+	bne l1
+goto
+	ldmea r0!, {r2}	; r2 is the first element of the outer loop
+	ldmea r1!, {r6}	; r6 is MINIMUM element at end of one iteration of j
+	stm r1, {r2}	; SWAP
+	stm r0, {r6}	; SWAP
+	add r0, #4		; increment ptr for array
+	add r10, #1		; i = i + 1
+	cmp r10, #4		; i < n - 1
+	bne l2		; for outer loop
+	ldmea r13!, {r0-r4}
+stop 
+	b stop
+	end
+	
+	--------------------------------------------------------------
+; selection sort using fully descending stack
+	area reset, data,readonly
+	export __Vectors
+__Vectors
+	dcd 0x10001000
+	dcd Reset_Handler
+	
+	area mydata, data, readwrite
+	
+	area mycode, code, readonly
+
+	export Reset_Handler
+	entry
+Reset_Handler
+	
+	mov r0, #10
+	mov r1, #5
+	mov r2, #35
+	mov r3, #25
+	mov r4, #15
+	stmfd r13!, {r0-r4}
+	mov r0, r13		
+l2
+	mov r1, r0		; r1 as i
+	mov r3, r0
+	sub r3, #4		; j = i + 1
+	add r11, r10, #1	; counter for i
+l1
+	ldmfd r3, {r4}	; r[4] = a[j]
+	ldmfd r1, {r7}	; r[7] = a[i]	
+	cmp r4, r7		; if r4 > r7, do not update max position
+	bcc up
+	mov r1, r3
+
+up
+	sub r3, #4	; decrement j
+	add r11, #1
+	cmp r11, #5	; till i reaches limit
+	beq goto		; for the inner loop
+	bne l1
+goto
+	ldmfd r0!, {r2}	; r2 is the first element of the outer loop
+	ldmfd r1!, {r6}	; r6 is MINIMUM element at end of one iteration of j
+	stm r1, {r2}	; SWAP
+	stm r0, {r6}	; SWAP
+	sub r0, #4		; increment ptr for array
+	add r10, #1		; i = i + 1
+	cmp r10, #4		; i < n - 1
+	bne l2		; for outer loop
+	ldmfd r13!, {r0-r4}
+stop 
+	b stop
+	end
+	
+	---------------------------------------------
