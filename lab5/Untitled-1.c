@@ -61,11 +61,11 @@ void main()
     printf("Enter number of vertices\n");
     scanf("%d", &v);
     printf("Enter adjacency matrix\n");
-    int adj[100][100];
+    int mat[100][100];
     for (i = 0; i < v; i++)
         for (j = 0; j < v; j++)
-            scanf("%d", &adj[i][j]);
-    printf("Requiered order\n");
-    taposort(adj, v);
+            scanf("%d", &mat[i][j]);
+    printf("order is: \n");
+    taposort(mat, v);
     printf("\n");
 } 
