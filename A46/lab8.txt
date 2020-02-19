@@ -1,0 +1,335 @@
+set serveroutput on;
+
+declare
+    message varchar(20) := 'Hello, World';
+begin
+     dbms_output.put_line(message);
+end;
+  /
+
+declare 
+	grade char(1);
+begin
+	grade := '&g';
+if grade= 'a' then
+	     dbms_output.put_line('excellent');
+---------------------------------------------------------------
+1)
+
+create table studenttable(
+rollno numeric(3),
+gpa  numeric(3,2),
+primary key (rollno)	);
+
+insert into studenttable values(1, 5.8);
+insert into studenttable values(2, 6.5);
+insert into studenttable values(3, 3.4);
+insert into studenttable values(4, 7.8);
+insert into studenttable values(5, 9.5);
+
+declare
+	rolln number(1);
+	mygpa studenttable.gpa%Type;
+begin
+	rolln := &x;
+ 	select gpa into mygpa from studenttable where rollno = rolln;
+	dbms_output.put_line(mygpa);
+end;
+/
+-------------------------------------------------------------------
+2)
+
+declare
+	rolln number(1);
+	grade char(2);
+	mygpa studenttable.gpa%Type;
+begin
+	rolln = &rollnumber;
+ 	select gpa into mygpa from studenttable where rollno = rolln;
+if mygpa < 4 then
+	grade := 'F';
+	--dbms_output.put_line('F');
+elsif mygpa < 5 then
+	grade := 'E';
+	--dbms_output.put_line('E');
+elsif  mygpa < 6 then
+	grade := 'D';
+	--dbms_output.put_line('D');
+elsif  mygpa < 7 then 
+	grade := 'C';
+	--dbms_output.put_line('C');
+elsif mygpa < 8 then
+	grade := 'B';
+	--dbms_output.put_line('B');
+elsif mygpa < 9 then
+	grade := 'A';
+	--dbms_output.put_line('A');
+elsif mygpa < 10 then
+	grade := 'A+';
+	--dbms_output.put_line('A+');
+else
+	dbms_output.put_line('No such grade');	
+end if;
+	dbms_output.put_line(' grade is ' ||grade);
+end;
+/
+
+------------------------------------------------------------------
+3)
+
+create bookdue(
+date 
+
+-------------------------------------------------------------------
+4)
+
+declare
+	rolln number(1);
+	grade char(2);
+	mygpa studenttable.gpa%Type;
+begin
+	rolln := 1;
+
+loop
+
+
+ 	select gpa into mygpa from studenttable where rollno = rolln;
+if mygpa < 4 then
+	grade := 'F';
+	--dbms_output.put_line('F');
+elsif mygpa < 5 then
+	grade := 'E';
+	--dbms_output.put_line('E');
+elsif  mygpa < 6 then
+	grade := 'D';
+	--dbms_output.put_line('D');
+elsif  mygpa < 7 then 
+	grade := 'C';
+	--dbms_output.put_line('C');
+elsif mygpa < 8 then
+	grade := 'B';
+	--dbms_output.put_line('B');
+elsif mygpa < 9 then
+	grade := 'A';
+	--dbms_output.put_line('A');
+elsif mygpa < 10 then
+	grade := 'A+';
+	--dbms_output.put_line('A+');
+else
+	dbms_output.put_line('No such grade');	
+end if;
+	dbms_output.put_line(' grade is ' ||grade);
+
+rolln := rolln + 1;
+
+if rolln = 6 then exit;
+end if;
+
+end loop;	
+end;
+/
+
+--------------------------------------------------------------
+5)
+
+declare 
+	grade char(2);
+	rolln number(1);
+	mygpa studenttable.gpa%Type;
+
+begin
+	rolln := 1;
+loop
+ 	select gpa into mygpa from studenttable where rollno = rolln;
+if mygpa < 4 then
+	grade := 'F';
+	--dbms_output.put_line('F');
+elsif mygpa < 5 then
+	grade := 'E';
+	--dbms_output.put_line('E');
+elsif  mygpa < 6 then
+	grade := 'D';
+	--dbms_output.put_line('D');
+elsif  mygpa < 7 then 
+	grade := 'C';
+	--dbms_output.put_line('C');
+elsif mygpa < 8 then
+	grade := 'B';
+	--dbms_output.put_line('B');
+elsif mygpa < 9 then
+	grade := 'A';
+	--dbms_output.put_line('A');
+elsif mygpa < 10 then
+	grade := 'A+';
+	--dbms_output.put_line('A+');
+else
+	dbms_output.put_line('No such grade');	
+end if;
+	
+update studenttable set lettergrade= grade where rollno=rolln;
+rolln := rolln + 1;
+
+if rolln = 6 then exit;
+end if;
+
+end loop;	
+end;
+/
+
+---------------------------------------------------------------------------------
+6)
+
+declare 
+	grade char(2);
+	rolln number(1);
+	mygpa studenttable.gpa%Type;
+	maxgpa studenttable.gpa%Type;
+begin
+	rolln := 1;
+ 	select gpa into maxgpa from studenttable where rollno = rolln;	
+loop
+	rolln := rolln + 1;
+ 	select gpa into mygpa from studenttable where rollno = rolln;
+	if mygpa > maxgpa then
+		--dbms_output.put_line('maximum gpa is ' ||maxgpa);
+		maxgpa := mygpa;
+	end if;
+	if rolln = 5 then exit;
+	end if;
+end loop;	
+	select rollno into rolln from studenttable where gpa = maxgpa;
+	dbms_output.put_line('maximum gpa is by rollno:  ' ||rolln);
+end;
+/
+------------------------------------------------------------------------------------
+7)
+declare
+	rolln number(1);
+	grade char(2);
+	mygpa studenttable.gpa%Type;
+begin
+	rolln := 1;
+
+loop
+
+
+ 	select gpa into mygpa from studenttable where rollno = rolln;
+if mygpa < 4 then
+	grade := 'F';
+	--dbms_output.put_line('F');
+elsif mygpa < 5 then
+	grade := 'E';
+	--dbms_output.put_line('E');
+elsif  mygpa < 6 then
+	grade := 'D';
+	--dbms_output.put_line('D');
+elsif  mygpa < 7 then 
+	grade := 'C';
+	--dbms_output.put_line('C');
+elsif mygpa < 8 then
+	grade := 'B';
+	--dbms_output.put_line('B');
+elsif mygpa < 9 then
+	grade := 'A';
+	--dbms_output.put_line('A');
+elsif mygpa < 10 then
+	grade := 'A+';
+	--dbms_output.put_line('A+');
+else
+	dbms_output.put_line('No such grade');	
+end if;
+	dbms_output.put_line(' grade is ' ||grade);
+
+rolln := rolln + 1;
+
+if rolln = 6 then goto <<final>>
+end if;
+
+end loop;	
+
+<<final>>
+	dbms_output_put_line('program over');
+end;
+/
+
+
+------------------------------------------------------------------------------------
+8)
+
+declare
+	myname varchar(20);
+	checkname instructor.name%TYPE;
+begin
+	myname := '&x';
+	select name into checkname from instructor where name = myname; 
+
+	exception
+	when too_many_rows then dbms_output.put_line('more than one row found' );	
+	when no_data_found then dbms_output.put_line('No instructors with that name');
+			
+end;
+/
+--------------------------------------------------------------------------------------------
+9)
+
+declare 
+	grade char(2);
+	rolln number(1);
+	mygpa studenttable.gpa%Type;
+
+begin
+	rolln := 1;
+loop
+ 	select gpa into mygpa from studenttable where rollno = rolln;
+if mygpa < 0 then
+	raise gpa_checker
+end if;
+
+if mygpa < 4 then
+	grade := 'F';
+	--dbms_output.put_line('F');
+elsif mygpa < 5 then
+	grade := 'E';
+	--dbms_output.put_line('E');
+elsif  mygpa < 6 then
+	grade := 'D';
+	--dbms_output.put_line('D');
+elsif  mygpa < 7 then 
+	grade := 'C';
+	--dbms_output.put_line('C');
+elsif mygpa < 8 then
+	grade := 'B';
+	--dbms_output.put_line('B');
+elsif mygpa < 9 then
+	grade := 'A';
+	--dbms_output.put_line('A');
+elsif mygpa < 10 then
+	grade := 'A+';
+	--dbms_output.put_line('A+');
+else
+	dbms_output.put_line('No such grade');	
+end if;
+	
+update studenttable set lettergrade= grade where rollno=rolln;
+rolln := rolln + 1;
+
+if rolln = 6 then exit;
+end if;
+
+exception
+	when gpa_checker then dbms_output.put_line(' gpa not is range ');
+
+end loop;	
+end;
+/
+
+
+
+
+
+
+
+
+
+
+
