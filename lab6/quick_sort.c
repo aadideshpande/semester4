@@ -1,72 +1,83 @@
+//quick sort
 #include<stdio.h>
 #include<stdlib.h>
+int opcount = 0;
+int arr[100];
 
-
-void swap(int *a, int x,int  y)
+void print(int m, int n)
 {
-	int temp = a[x];
-	a[x] = a[y];
-	a[y] = temp;
+    printf("sorted array is: \n");
+    for(int i = m; i < n; i++)
+    {
+        printf(" %d", arr[i]);
+    }
+    printf("\n");
+}
+void swap(int x, int y)
+{
+
+    int temp = arr[x];
+    arr[x] = arr[y];
+    arr[y] = temp;
 }
 
-int partition(int *a, int l, int r)
+int partition(int l, int r)
 {
-	int p = a[l];
-	int i = l;
-	int j = r + 1;
-	do
-	{
-		do
-		{
-			i += 1;
-		}while(a[i] < p);
 
-		do
-		{
-			j -= 1;
-		}while(a[j] > p);
-		swap(a, i, j);
-
-	}while(i < j);
-
-	swap(a, i, j);
-	swap(a, l, j);
-	return j;
+    if(r == (l + 1))
+    {
+        if(arr[l] > arr[r])
+        {
+            swap(l, r);
+            return 0;
+        }
+    }
+    int pivot = arr[l];
+    int i = l, j = r + 1;
+    while(i <= j)
+    {
+        do
+        {
+            i++;
+            opcount++;
+        } while (pivot > arr[i]);
+        do
+        {
+            j--;
+            opcount++;
+        } while (pivot < arr[j]);
+        if(i < j){swap(i, j);}
+    }
+    //swap(i, j);
+    swap(l, j);
+    return j;
 }
 
-int* quicksort(int a[], int l, int  r)
+void quick(int l,int r)
 {
-	if(l < r)
-	{
-		int s = partition(a, l , r);
-		a = quicksort(a, l ,s-1);
-		a = quicksort(a, s+1, r);
-	}
-	return a;
+
+    if(l < r)
+    {
+        int s = partition(l,r);
+        //printf("s is: %d \n", s);
+        quick(l,s - 1);
+        quick(s + 1, r);
+    }
 }
-
-
 
 int main()
 {
-	int n, x;
-	int l, r;
-	int arr[100];
-	printf("enter number of elements in the array: \n");
-	scanf(" %d", &n);
+    int n;
+    printf("enter length of the array: \n");
+    scanf(" %d", &n);
 
-	printf("enter the array elements: \n");
-	for(int i = 0; i < n; i++)
-	{
-		scanf(" %d", &x);
-		arr[i] = x;
-	}
-	arr = quicksort(arr, l, r);
+    printf("enter the elements: ");
+    for(int i = 0; i < n; i++)
+    {
+        scanf(" %d", &arr[i]);
+    }
+    quick(0,n - 1);
+    print(0, n);
+    printf("opcount is: %d \n", opcount);
 
-	printf("printing the final array: \n");
-	for(int i = 0; i < n; i++)
-	{
-		printf(" %d  ", arr[i] );
-	}	
-	printf("\n");
 }

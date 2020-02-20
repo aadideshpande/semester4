@@ -1,50 +1,85 @@
 #include<stdio.h>
 #include<stdlib.h>
-
-void copy(int a[],int s1, int e1, int b[], int s2, int e2)
+int opcount = 0;
+void merge(int arr[], int beg, int mid, int end)
 {
-	for(int i = s1; i <= e1; i++)
-	{
-		b[i] = a[i];		
-	}
+    int i = beg, j = mid+1, temp[100];
+    int index = beg;
+
+    //formation of a sorted array
+    while((i <= mid) && (j <= end))
+    {
+        if(arr[i] > arr[j])
+        {
+            temp[index] = arr[j];
+            j++;
+        }
+        else
+        {
+            temp[index] = arr[i];
+            i++;
+        }
+        index++;
+    }
+
+    //for remaining elements
+    while(i <= mid)
+    {
+        temp[index] = arr[i];
+        i++;
+        index++;
+    }
+    while(j <= end)
+    {
+        temp[index] = arr[j];
+        j++;
+        index++;
+    }
+
+    //copy the new order to the original array
+    for(int k = beg; k < index; k++)
+    {
+        arr[k] = temp[k];
+    }
 }
 
-void merge(in
-	t b[], int c[], int a[])
-{
-	int i = 0, j = 0;;
-	while(i )
-}
 
-
-int* mergesort(int n, int a[])
+void merge_sort(int arr[], int beg, int end)
 {
-	int b[100], int c[100];
-	if(n > 1)
-	{
-		int floor = int(n/2);
-		copy(a, 0, floor-1, b, 0, floor-1);
-		copy(a, floor, n-1, c, 0, floor-1);
-		mergesort(floor,b);
-		mergesort(floor,c);
-		merge(b,floor, c, floor,a, n);
-	}
-	return a;
+    //if there are two or more elements in the array
+    if(beg<end)
+    {
+        opcount++;
+        int mid = (beg + end) / 2;
+        merge_sort(arr, beg, mid);
+        merge_sort(arr, mid + 1, end);
+
+        //combine the two arrays
+        merge(arr, beg, mid, end);
+
+    }
 }
 
 
 int main()
 {
-	int n, x;
-	int arr[100];
-	printf("enter number of elements in the array: \n");
-	scanf(" %d", &n);
+    int arr[100];
+    int n;
+    printf("enter number of elements: \n");
+    scanf(" %d", &n);
+    for(int i = 0; i < n; i++)
+    {
+        scanf(" %d", &arr[i]);
+    }
 
-	printf("enter the array elements: \n");
-	for(int i = 0; i < n; i++)
-	{
-		scanf(" %d", &x);
-		arr[i] = x;
-	}
-	arr = mergesort(n, arr);
+    merge_sort(arr, 0, n - 1);
+    
+    //output
+    for(int i = 0; i < n; i++)
+    {
+        printf(" %d", arr[i]);
+    }
+    printf("\n");
+    printf("opcount is: %d \n", opcount);
+
 }
